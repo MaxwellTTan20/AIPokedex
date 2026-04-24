@@ -42,10 +42,10 @@ def load_model():
     print(f"Loaded {len(class_names)} Pokemon classes from {class_names_path}")
 
     # Set path for Pokedex images
-    pokedex_images_path = os.path.join(base_path, 'Pokedex Image Dataset')
+    pokedex_images_path = os.path.join('static', 'images', 'Pokedex Image Dataset')
 
     # Load Pokedex data CSV
-    pokedex_csv_path = os.path.join(base_path, 'updated_pokedex_dataset.csv')
+    pokedex_csv_path = os.path.join('static', 'css', 'updated_pokedex_dataset.csv')
     pokedex_data = pd.read_csv(pokedex_csv_path)
     print(f"Loaded Pokedex data with {len(pokedex_data)} entries")
 
