@@ -498,6 +498,14 @@ body {
 .top-pokemon-image-container {
     flex-shrink: 0;
     display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.output-image-wrapper {
+    display: flex;
     align-items: center;
     justify-content: center;
 }
@@ -512,6 +520,32 @@ body {
     background: white;
     padding: 20px;
     animation: bounceIn 0.6s ease-out;
+}
+
+.input-image-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.input-label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin: 0;
+}
+
+.input-pokemon-image {
+    max-width: 300px;
+    max-height: 300px;
+    width: auto;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    background: white;
+    padding: 15px;
+    animation: slideDown 0.5s ease-out 0.4s backwards;
 }
 
 .prediction-result {
@@ -575,6 +609,9 @@ body {
     border: 3px solid var(--pokemon-blue);
     flex: 1;
     text-align: left;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
 }
 
 .pokedex-header {
@@ -620,6 +657,9 @@ body {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .stats-title {
@@ -951,6 +991,15 @@ body {
     .top-pokemon-image {
         max-width: 250px;
         max-height: 250px;
+    }
+
+    .input-pokemon-image {
+        max-width: 200px;
+        max-height: 200px;
+    }
+
+    .input-label {
+        font-size: 0.9rem;
     }
 
     .pokedex-info {
