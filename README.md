@@ -51,26 +51,24 @@ python app.py
 
 ## Deployment to Render
 
-### Before Deployment
+### ✅ Deployment Ready!
 
-**⚠️ IMPORTANT: Dataset Size Issue**
+This app is now configured for easy deployment on Render's free tier!
 
-The full dataset (~140k images) is too large for free Render hosting. You have 3 options:
+**What you need to deploy:**
+- ✅ **Pokedex Image Dataset** (1,069 images) - ~50-100 MB
+- ✅ **class_names.txt** (list of Pokemon classes) - < 1 KB
+- ✅ **updated_pokedex_dataset.csv** (Pokemon stats) - < 1 MB
+- ✅ **model_epoch6.pth** (trained model) - ~50-200 MB
 
-**Option A: Use Render Paid Plan**
-- Upgrade to a paid plan with more storage
-- Upload full dataset to persistent disk
+**Total size: ~100-300 MB** (well within Render free tier limits!)
 
-**Option B: Reduce Dataset Size**
-- Only include the "Pokedex Image Dataset" (1069 images)
-- Remove the large "Pokemon Labelled Classification Images" folder
-- Update code to load class_names from a text file instead of ImageFolder
+**What you DON'T need:**
+- ❌ "Pokemon Labelled Classification Images" folder (2+ GB of training data)
+  - Already excluded in `.gitignore`
+  - Class names are now loaded from `class_names.txt` instead
 
-**Option C: Use External Storage**
-- Host images on AWS S3, Cloudflare R2, or similar
-- Fetch images from URLs instead of local files
-
-### Deployment Steps (Option B - Recommended for Free Tier)
+### Deployment Steps
 
 1. **Prepare Repository**
 ```bash

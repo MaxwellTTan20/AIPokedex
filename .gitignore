@@ -25,3 +25,11 @@ Thumbs.db
 
 # Local development
 *.log
+
+# Dataset - Exclude large training images, keep only necessary files
+dataset/Pokemon Labelled Classification Images/
+
+# Keep these dataset files (they're small and needed)
+!dataset/class_names.txt
+!dataset/Pokedex Image Dataset/
+!dataset/updated_pokedex_dataset.csv

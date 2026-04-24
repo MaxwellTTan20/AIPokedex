@@ -3,7 +3,6 @@ from flask import Flask, render_template, request, jsonify, send_file
 import torch
 import torch.nn as nn
 import torchvision.models as models
-from torchvision.datasets import ImageFolder
 from torchvision.transforms import v2
 from PIL import Image
 import io
@@ -32,14 +31,15 @@ def load_model():
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f"Using device: {device}")
 
-    # Load class names from dataset
+    # Load class names from text file (much smaller than loading full ImageFolder dataset)
     # Use environment variable for dataset path, fallback to local path for development
     base_path = os.getenv('DATASET_PATH', os.path.join(os.path.dirname(__file__), 'dataset'))
 
-    dataset_path = os.path.join(base_path, 'Pokemon Labelled Classification Images')
-    temp_dataset = ImageFolder(dataset_path)
-    class_names = temp_dataset.classes
-    print(f"Loaded {len(class_names)} Pokemon classes")
+    # Load class names from file instead of ImageFolder
+    class_names_path = os.path.join(base_path, 'class_names.txt')
+    with open(class_names_path, 'r', encoding='utf-8') as f:
+        class_names = [line.strip() for line in f if line.strip()]
+    print(f"Loaded {len(class_names)} Pokemon classes from {class_names_path}")
 
     # Set path for Pokedex images
     pokedex_images_path = os.path.join(base_path, 'Pokedex Image Dataset')
