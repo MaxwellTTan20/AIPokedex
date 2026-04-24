@@ -31,6 +31,7 @@ const errorText = document.getElementById('errorText');
 const topPrediction = document.getElementById('topPrediction');
 const topConfidence = document.getElementById('topConfidence');
 const topPokemonImage = document.getElementById('topPokemonImage');
+const inputPokemonImage = document.getElementById('inputPokemonImage');
 const predictionsList = document.getElementById('predictionsList');
 const tryAgainButton = document.getElementById('tryAgainButton');
 const errorTryAgainButton = document.getElementById('errorTryAgainButton');
@@ -221,6 +222,22 @@ function displayResults(data) {
         topPokemonImage.style.display = 'none';
     }
 
+    // Display input image (either uploaded or drawn)
+    // Check which tab is active to determine the source
+    const isDrawTabActive = drawTab.classList.contains('active');
+
+    if (isDrawTabActive && drawingCanvas) {
+        // User drew an image
+        inputPokemonImage.src = drawingCanvas.toDataURL();
+        inputPokemonImage.style.display = 'block';
+    } else if (previewImage.src) {
+        // User uploaded an image
+        inputPokemonImage.src = previewImage.src;
+        inputPokemonImage.style.display = 'block';
+    } else {
+        inputPokemonImage.style.display = 'none';
+    }
+
     // Display Pokedex info
     const pokedexInfo = document.getElementById('pokedexInfo');
     if (data.pokemon_info) {
@@ -351,6 +368,8 @@ function resetUpload() {
     previewImage.src = '';
     topPokemonImage.src = '';
     topPokemonImage.style.display = 'none';
+    inputPokemonImage.src = '';
+    inputPokemonImage.style.display = 'none';
     uploadZone.style.display = 'block';
     previewSection.style.display = 'none';
     loading.style.display = 'none';

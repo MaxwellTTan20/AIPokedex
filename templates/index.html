@@ -136,9 +136,15 @@
 
                 <!-- Top Section: Image + Pokedex Info Side by Side -->
                 <div class="top-section">
-                    <!-- Left: Pokemon Image -->
+                    <!-- Left: Pokemon Images (Output + Input) -->
                     <div class="top-pokemon-image-container">
-                        <img id="topPokemonImage" class="top-pokemon-image" alt="Pokemon" style="display: none;">
+                        <div class="output-image-wrapper">
+                            <img id="topPokemonImage" class="top-pokemon-image" alt="Pokemon" style="display: none;">
+                        </div>
+                        <div class="input-image-wrapper">
+                            <p class="input-label">Your Input:</p>
+                            <img id="inputPokemonImage" class="input-pokemon-image" alt="Your Input" style="display: none;">
+                        </div>
                     </div>
 
                     <!-- Right: Pokedex Info -->
@@ -171,7 +177,7 @@
         </main>
         <!-- Footer -->
         <footer class="footer">
-            <p>Made with PyTorch & EfficientNet-B3 | 1069 Pokemon Classes</p>
+            <p>Made by Maxwell Tan and his little agentic friend with PyTorch & EfficientNet-B3 | 1069 Pokemon Classes</p>
         </footer>
     </div>
 
