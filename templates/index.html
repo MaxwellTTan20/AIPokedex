@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Pokedex - Pokemon Classifier</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/pokedexImage.png') }}">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <img src="{{ url_for('static', filename='images/pokedexImage.png') }}" alt="Pokedex" class="header-decoration header-right">
+            <div class="header-content">
+                <h1 class="title">AI POKEDEX</h1>
+                <p class="subtitle">Who's That Pokemon?</p>
+            </div>
+            <img src="{{ url_for('static', filename='images/gen1pokemon.png') }}" alt="Gen 1 Pokemon" class="header-decoration header-left">
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Tab Navigation -->
+            <div class="tabs">
+                <button class="tab-button active" id="uploadTab" data-tab="upload">
+                    📤 Upload Image
+                </button>
+                <button class="tab-button" id="drawTab" data-tab="draw">
+                    🎨 Draw Pokemon
+                </button>
+            </div>
+
+            <!-- Upload Section -->
+            <section class="upload-section tab-content active" id="uploadContent">
+                <div class="upload-zone" id="uploadZone">
+                    <div class="upload-content">
+                        <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        <p class="upload-text">Drag & Drop an image here</p>
+                        <p class="upload-subtext">or click to browse</p>
+                        <input type="file" id="fileInput" accept="image/*" hidden>
+                    </div>
+                </div>
+
+                <!-- Image Preview -->
+                <div class="preview-section" id="previewSection" style="display: none;">
+                    <div class="preview-container">
+                        <img id="previewImage" alt="Preview">
+                        <button class="clear-button" id="clearButton">×</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Draw Section -->
+            <section class="draw-section tab-content" id="drawContent" style="display: none;">
+                <div class="canvas-container">
+                    <div class="canvas-tools">
+                        <div class="tool-group">
+                            <label class="tool-label">Tool:</label>
+                            <button class="tool-button active" id="brushTool" data-tool="brush">
+                                🖌️ Brush
+                            </button>
+                            <button class="tool-button" id="eraserTool" data-tool="eraser">
+                                🧽 Eraser
+                            </button>
+                        </div>
+
+                        <div class="tool-group">
+                            <label class="tool-label">Color:</label>
+                            <input type="color" id="colorPicker" value="#000000">
+                            <div class="color-presets">
+                                <button class="color-preset" style="background: #000000;" data-color="#000000"></button>
+                                <button class="color-preset" style="background: #FF0000;" data-color="#FF0000"></button>
+                                <button class="color-preset" style="background: #00FF00;" data-color="#00FF00"></button>
+                                <button class="color-preset" style="background: #0000FF;" data-color="#0000FF"></button>
+                                <button class="color-preset" style="background: #FFFF00;" data-color="#FFFF00"></button>
+                                <button class="color-preset" style="background: #FF00FF;" data-color="#FF00FF"></button>
+                            </div>
+                        </div>
+
+                        <div class="tool-group">
+                            <label class="tool-label">Brush Size:</label>
+                            <input type="range" id="brushSize" min="1" max="50" value="5">
+                            <span id="brushSizeValue">5</span>
+                        </div>
+
+                        <div class="tool-group">
+                            <button class="action-button" id="clearCanvas">🗑️ Clear</button>
+                            <button class="action-button" id="undoCanvas">↶ Undo</button>
+                        </div>
+                    </div>
+
+                    <div class="canvas-wrapper">
+                        <canvas id="drawingCanvas" width="512" height="512"></canvas>
+                    </div>
+
+                    <button class="submit-drawing-button" id="submitDrawing">
+                        Analyze My Drawing
+                    </button>
+                </div>
+            </section>
+
+            <!-- Loading Indicator -->
+            <div class="loading" id="loading" style="display: none;">
+                <div class="pokeball-spinner">
+                    <div class="pokeball">
+                        <div class="pokeball-top"></div>
+                        <div class="pokeball-middle"></div>
+                        <div class="pokeball-bottom"></div>
+                        <div class="pokeball-button"></div>
+                    </div>
+                </div>
+                <p class="loading-text">Analyzing Pokemon...</p>
+            </div>
+
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <!-- Top: Prediction Result -->
+                <div class="prediction-result">
+                    <h2 class="results-title">It's <span id="topPrediction"></span>!</h2>
+                    <p class="confidence" id="topConfidence"></p>
+                </div>
+
+                <!-- Top Section: Image + Pokedex Info Side by Side -->
+                <div class="top-section">
+                    <!-- Left: Pokemon Image -->
+                    <div class="top-pokemon-image-container">
+                        <img id="topPokemonImage" class="top-pokemon-image" alt="Pokemon" style="display: none;">
+                    </div>
+
+                    <!-- Right: Pokedex Info -->
+                    <div class="pokedex-info" id="pokedexInfo" style="display: none;">
+                        <div class="pokedex-header">
+                            <h3 class="pokedex-title">📖 Pokedex Entry</h3>
+                            <span class="pokemon-number" id="pokemonNumber"></span>
+                        </div>
+                        <p class="pokedex-description" id="pokedexDescription"></p>
+                        <div class="stats-container">
+                            <h4 class="stats-title">Base Stats</h4>
+                            <div class="stats-grid" id="statsGrid"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="predictions-list">
+                    <h3 class="list-title">Top 5 Predictions</h3>
+                    <div id="predictionsList"></div>
+                </div>
+
+                <button class="try-again-button" id="tryAgainButton">Try Another Image</button>
+            </section>
+
+            <!-- Error Message -->
+            <div class="error-message" id="errorMessage" style="display: none;">
+                <p class="error-text" id="errorText"></p>
+                <button class="try-again-button" id="errorTryAgainButton">Try Again</button>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Made with PyTorch & EfficientNet-B3 | 1069 Pokemon Classes</p>
+        </footer>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
