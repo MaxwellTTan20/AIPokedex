@@ -254,9 +254,12 @@ def predict():
         })
 
 
+# Load model at module level so gunicorn can use it
+load_model()
+
+
 if __name__ == '__main__':
-    # Load model before starting server
-    load_model()
+    # Model already loaded above
 
     # Run Flask app
     # Use PORT environment variable for deployment, default to 5000 for local
