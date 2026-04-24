@@ -2,7 +2,7 @@ services:
   - type: web
     name: ai-pokedex
     env: python
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu && pip install -r requirements.txt
     startCommand: gunicorn app:app
     envVars:
       - key: PYTHON_VERSION
