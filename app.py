@@ -33,8 +33,8 @@ def load_model():
     print(f"Using device: {device}")
 
     # Load class names from dataset
-    # Use environment variable for dataset path, fallback to local path for development
-    base_path = os.getenv('DATASET_PATH', os.path.join(os.path.dirname(__file__), 'dataset'))
+    # Use environment variable for dataset path, fallback to local Windows path for development
+    base_path = os.getenv('DATASET_PATH', r"C:\Users\tanm6\.cache\kagglehub\datasets\shivanshcoding\1282-pokemon-139542-images-updated-pokedex-dataset\versions\10")
 
     dataset_path = os.path.join(base_path, 'Pokemon Labelled Classification Images')
     temp_dataset = ImageFolder(dataset_path)
